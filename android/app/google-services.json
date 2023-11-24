@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "848811892519",
+    "project_id": "newatt-71b8b",
+    "storage_bucket": "newatt-71b8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848811892519:android:f3a0d93a0e9e3db9059302",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnE8RslCjBIRt7YIcQPh2WanGFPFselKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
