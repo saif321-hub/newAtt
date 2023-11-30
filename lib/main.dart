@@ -18,7 +18,7 @@ void main() async{
 runApp(const MyApp());
 await getPer();
 await noti();
-getUuid();
+//getUuid();
 }
 late StreamSubscription _sub;
 late DatabaseReference dbRef;
@@ -114,14 +114,16 @@ void initState() {
     
     // TODO: implement initState
     super.initState();
-    getUuid();
-    dbRef=FirebaseDatabase.instance.ref().child('Loctions');
+    
+    //dbRef=FirebaseDatabase.instance.ref().child('Loctions');
+    
   }
+
 
 
     String time="";
 void  getLoc ()async{
-
+  getUuid();
   location.changeNotificationOptions(
   title: 'You Are Live',
   subtitle: 'Tap to return to the App',
@@ -134,13 +136,14 @@ _sub= location.onLocationChanged.listen((LocationData currentLocation) {
     lat=currentLocation.latitude.toString();
     lang=currentLocation.longitude.toString();
     time=DateTime.now().toString();
+    DatabaseReference ref = FirebaseDatabase.instance.ref("users/"+textId);
     Map<String,String> loctions={
         'lat':lat,
         'lang':lang,
         'time':time,
         'ID':uuid!,
     };
-    dbRef.push().set(loctions);
+    ref.set(loctions);
     print("Working");
     setState(() {});
 });
