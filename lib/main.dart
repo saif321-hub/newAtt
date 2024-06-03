@@ -4,17 +4,11 @@ import 'package:android_id/android_id.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:location/location.dart';
-import 'package:permission_handler/permission_handler.dart'
-    hide PermissionStatus;
+import 'package:permission_handler/permission_handler.dart' hide PermissionStatus;
 
-//import 'package:permission_handler/permission_handler.dart' hide PermissionStatus;
-//heloo world
-//will this show there ?
-//cloned
-//saif saeed
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,20 +16,24 @@ void main() async {
   runApp(const MyApp());
   await getPer();
   await noti();
-//getUuid();
 }
 
 late StreamSubscription _sub;
+
 late DatabaseReference dbRef;
+
+
+//SET NOTIFICATION CHANNEL
 const notificationChannelId = 'my_foreground';
-/////////////////////////////////////////////////////
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   notificationChannelId, // id
   'MY FOREGROUND SERVICE', // title
   description:
       'This channel is used for important notifications.', // description
-  importance: Importance.low, // importance must be at low or higher level
+  importance: Importance.low, 
 );
+
+//GET NOTIFICATION PERMISSION
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -52,22 +50,11 @@ Future<void> noti() async {
   return;
 }
 
-bool isLive = false;
-String lat = "";
-String lang = "";
 Location location = Location();
 
+//GET LOACTION PERMISSION
 late bool _serviceEnabled;
 late PermissionStatus _permissionGranted;
-
-String textId = "your andriod ID will be shown Here !!!";
-String? uuid;
-AndroidId id = const AndroidId();
-
-void getUuid() async {
-  uuid = await id.getId();
-  textId = uuid!.toUpperCase();
-}
 
 Future<void> getPer() async {
   _serviceEnabled = await location.serviceEnabled();
@@ -86,6 +73,25 @@ Future<void> getPer() async {
     }
   }
 }
+
+//GET ANDRIOD ID
+
+String textId = "your andriod ID will be shown Here !!!";
+String? uuid;
+AndroidId id = const AndroidId();
+
+void getUuid() async {
+  uuid = await id.getId();
+  textId = uuid!.toUpperCase();
+}
+
+bool isLive = false;
+String lat = "";
+String lang = "";
+String sped="";
+String time = "";
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -112,10 +118,9 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
 
-    //dbRef=FirebaseDatabase.instance.ref().child('Loctions');
   }
 
-  String time = "";
+// SENDING/UPDATING DATA FUNCION
   void getLoc() async {
     getUuid();
     location.changeNotificationOptions(
@@ -129,20 +134,23 @@ class _HomePageState extends State<HomePage> {
     _sub = location.onLocationChanged.listen((LocationData currentLocation) {
       lat = currentLocation.latitude.toString();
       lang = currentLocation.longitude.toString();
+      sped=currentLocation.speed.toString();
       time = DateTime.now().toString();
+      print(sped);
       DatabaseReference ref = FirebaseDatabase.instance.ref("users/" + textId);
       Map<String, String> loctions = {
         'lat': lat,
         'lang': lang,
         'time': time,
         'ID': uuid!,
+        'sped':sped,
       };
       ref.set(loctions);
       print("Working");
       setState(() {});
     });
   }
-
+//STOP TRACK FUNCTION
   void calLoc() {
     _sub.cancel();
     setState(() {
@@ -200,7 +208,6 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 onPressed: () async {
                   location.enableBackgroundMode(enable: true);
-                  //getPer();
                   getLoc();
                 },
                 child: Text(
