@@ -8,3 +8,9 @@ Which is titled "Cars and Personnel GPS Tracking" , and consist of 3 main parts 
 
 3- Database: used Firebase Realtime Database
 
+
+Overview:
+
+The App on the Phone sends Data (ID,longitude,latitude,speed and time) to Firebase Realtime Database 
+to be fetched by the website and Track the live location of the Phone by displaying its location
+on a Map.
